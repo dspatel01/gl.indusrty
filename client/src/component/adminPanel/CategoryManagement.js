@@ -6,6 +6,7 @@ import SideBar from "../adminPanel/Sidebar"
 import { MdOutlineSpaceDashboard } from "react-icons/md";
 import { MdCancel } from "react-icons/md";
 
+
 const CategoryManagement = () => {
     const [categories, setCategories] = useState([]);
     const [name, setName] = useState('');
