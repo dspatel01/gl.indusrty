@@ -31,5 +31,9 @@ app.use('/api/admin', userRoutes);
 app.use('/api/contact', contactRouter)
 app.use("/api", sliderRoutes);
 
+app.get("/servertest",(req,res)=>{
+    res.send("server sunning")
+})
+
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
