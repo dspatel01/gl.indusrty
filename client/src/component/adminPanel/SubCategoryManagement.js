@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
-import SideBar from "../adminPanel/Sidebar"
+import SideBar from "../adminPanel/Sidebar";
 import { MdOutlineSpaceDashboard } from "react-icons/md";
 import { MdCancel } from "react-icons/md";
 
@@ -16,8 +17,18 @@ const SubCategoryManagement = () => {
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
     const [editId, setEditId] = useState(null);
-    const [openSideBar, setSideBar] = useState(false)
-    const [subCategoryForm, setSubCAtegoryForm] = useState(false)
+    const [openSideBar, setSideBar] = useState(false);
+    const [subCategoryForm, setSubCategoryForm] = useState(false);
+
+    const navigate = useNavigate();
+
+    // Redirect to login if token is missing
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            navigate('/admin/login'); // Redirect to login page
+        }
+    }, [navigate]);
 
     useEffect(() => {
         fetchCategories();
@@ -26,7 +37,7 @@ const SubCategoryManagement = () => {
 
     const fetchSubCategories = async () => {
         try {
-            const response = await axios.get('http://localhost:8080/api/subcategories');
+            const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/subcategories`);
             setSubCategories(response.data);
         } catch (error) {
             console.error("Error fetching subcategories:", error);
@@ -35,7 +46,7 @@ const SubCategoryManagement = () => {
 
     const fetchCategories = async () => {
         try {
-            const response = await axios.get('http://localhost:8080/api/categories');
+            const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/categories`);
             setCategories(response.data);
         } catch (error) {
             console.error("Error fetching categories:", error);
@@ -45,25 +56,23 @@ const SubCategoryManagement = () => {
     const handleAddOrEditCategory = async () => {
         try {
             if (editId) {
-                // Update subcategory (PUT request)
-                await axios.put(`http://localhost:8080/api/subcategories/${editId}`, {
+                await axios.put(`${process.env.REACT_APP_BASE_URL}/api/subcategories/${editId}`, {
                     name,
                     parentCategory,
                     description,
-                    status
+                    status,
                 });
                 setSuccess('Subcategory updated successfully');
             } else {
-                // Create new subcategory (POST request)
-                await axios.post('http://localhost:8080/api/subcategories', {
+                await axios.post(`${process.env.REACT_APP_BASE_URL}/api/subcategories`, {
                     name,
                     parentCategory,
                     description,
-                    status
+                    status,
                 });
                 setSuccess('Subcategory created successfully');
             }
-            fetchSubCategories(); // Refresh subcategories list
+            fetchSubCategories();
             resetForm();
         } catch (error) {
             console.error('Error:', error);
@@ -71,24 +80,21 @@ const SubCategoryManagement = () => {
         }
     };
 
-
-
     const handleDeleteCategory = async (id) => {
         try {
-            const response = await axios.delete(`http://localhost:8080/api/subcategories~/${id}`);
+            const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/api/subcategories/${id}`);
             if (response.status === 200) {
-                // Update the local state if deletion is successful
-                setCategories(categories.filter(category => category._id !== id));
+                setCategories(categories.filter((category) => category._id !== id));
                 alert("Category deleted successfully!");
-                fetchSubCategories(); // Refresh subcategories list
+                fetchSubCategories();
             }
         } catch (error) {
-            // Display the error message from the API
-            console.log("Error:", error.response.data.message || "Error deleting category");
+            console.log("Error:", error.response?.data?.message || "Error deleting category");
             setError('An error occurred while deleting the subcategory');
-            alert(error.response.data.message || "Error deleting category");
+            alert(error.response?.data?.message || "Error deleting category");
         }
     };
+
     const handleEditCategory = (subcategory) => {
         setEditId(subcategory._id);
         setName(subcategory.name);
@@ -98,7 +104,6 @@ const SubCategoryManagement = () => {
         setSuccess('');
         setError('');
     };
-
 
     const resetForm = () => {
         setEditId(null);
@@ -111,16 +116,16 @@ const SubCategoryManagement = () => {
     };
 
     const handleSideBar = () => {
-        !openSideBar ? setSideBar(true) : setSideBar(false)
-    }
+        setSideBar(!openSideBar);
+    };
 
-const handleAddSubCategoryForm = () =>{
-    !subCategoryForm ? setSubCAtegoryForm(true) : setSubCAtegoryForm(false)
-}
+    const handleAddSubCategoryForm = () => {
+        setSubCategoryForm(!subCategoryForm);
+    };
 
-useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-}, [])
+    useEffect(() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, []);
 
 
     return (
@@ -198,7 +203,7 @@ useEffect(() => {
                         {error && <p className="text-red-500 mt-4">{error}</p>}
                     </div>}
 
-                    <div className='h-[75vh] overflow-y-scroll w-[60%]'>
+                    <div className='h-[75vh] overflow-y-scroll xl:w-[60%] sm:w-[100%] w-[100%]'>
                     <table className=" xl:w-[100%] md:w-[100%] sm:w-[100%] w-[100%] border xl:order-1 md:order-2 sm:order-2 order-2 my-5">
                         <thead>
                             <tr className='h-12 bg-[#3b82f6] text-white'>

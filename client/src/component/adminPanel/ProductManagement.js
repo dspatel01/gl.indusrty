@@ -12,7 +12,7 @@ const ProductManagement = () => {
 
     const getProduct = async () => {
         try {
-            const responce = await axios.get('http://localhost:8080/api/products')
+            const responce = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/products`)
             if (responce) {
                 setProduct(responce.data)
                 console.log("success")
@@ -23,8 +23,13 @@ const ProductManagement = () => {
     }
 
     useEffect(() => {
-        getProduct()
-    }, [])
+        const token = localStorage.getItem('token');
+        if (!token) {
+            navigate('/admin/login'); // Redirect to login if token is not found
+        } else {
+            getProduct()
+        }
+    }, [navigate])
 
     const handleProductDetails = (pId) => {
         navigate(`/productDetails/${pId}`)

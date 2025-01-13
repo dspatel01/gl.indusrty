@@ -5,7 +5,9 @@ const categoryRoutes = require('./routes/categoryRoutes');
 const subCategoryRoutes = require('./routes/subCategoryRoutes');
 const productRoutes = require('./routes/productRoutes')
 const userRoutes = require('./routes/userRoutes')
+const adminSignupRoutes = require('./routes/adminSignupRoutes')
 const contactRouter = require('./routes/contactRoutes')
+const sliderRoutes = require("./routes/sliderImageRouter");
 const path = require('path');
 var cors = require('cors')
 
@@ -21,11 +23,13 @@ app.use(cors())
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Routes
+app.use('/api/', adminSignupRoutes);
 app.use('/api/categories', categoryRoutes);
 app.use('/api/subcategories', subCategoryRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/admin', userRoutes);
 app.use('/api/contact', contactRouter)
+app.use("/api", sliderRoutes);
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

@@ -16,7 +16,7 @@ const Contact = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:8080/api/contact", formData);
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/api/contact`, formData);
       setSuccessMessage(response.data.message);
       setFormData({ name: "", email: "", message: "", mobile: "" });
       setErrorMessage("");
@@ -43,7 +43,7 @@ useEffect(() => {
         <div className="w-full max-w-5xl mx-auto p-4 pt-0 lg:p-10">
           {/* Header */}
           <div className="text-center xl:mb-12 md:mb-8 sm:mb-4 mb-4">
-            <h1 className="xl:text-4xl md:text-4xl sm:text-2xl text-2xl font-bold  italic font-serif">For More Enquery Contact Us</h1>
+            <h1 className="xl:text-4xl md:text-4xl sm:text-2xl text-2xl font-bold  italic font-serif">For More Enquiry Contact Us</h1>
             
           </div>
 
@@ -70,7 +70,9 @@ useEffect(() => {
                 </div>
                 <div>
                   <h2 className="font-bold text-lg">Phone</h2>
-                  <p>+91-9212790910</p>
+                  <p>+91-8383977648</p> 
+                  <p>+91-9212790910</p>                
+              
                 </div>
               </div>
 

@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 
 const CreateProduct = () => {
@@ -16,14 +17,22 @@ const CreateProduct = () => {
     const [subCategories, setSubCategories] = useState([]);
     const [categories, setCategories] = useState([]);
     const [image, setImage] = useState(null);
+    const navigate = useNavigate(); // Initialize navigation
 
     useEffect(() => {
-        fetchCategories();
+        // Check for token in local storage
+        const token = localStorage.getItem('token');
+        if (!token) {
+            navigate('/admin/login'); // Redirect to login if token is not found
+        } else {
+            fetchCategories();
+        }
     }, []);
+
 
     const fetchCategories = async () => {
         try {
-            const response = await axios.get('http://localhost:8080/api/categories');
+            const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/categories`);
             setCategories(response.data);
         } catch (error) {
             console.error("Error fetching categories:", error);
@@ -32,7 +41,7 @@ const CreateProduct = () => {
 
     const fetchSubCategories = async (categoryId) => {
         try {
-            const response = await axios.get(`http://localhost:8080/api/subcategories/${categoryId}`);
+            const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/subcategories/${categoryId}`);
             setSubCategories(response.data); // Assuming `response.data` returns an array of subcategories
         } catch (error) {
             console.error("Error fetching subcategories:", error);
@@ -75,7 +84,7 @@ const CreateProduct = () => {
         }
 
         try {
-            const response = await axios.post('http://localhost:8080/api/products', formData, {
+            const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/api/products`, formData, {
                 headers: { 'Content-Type': 'multipart/form-data' },
             });
 
@@ -101,86 +110,86 @@ const CreateProduct = () => {
 
     return (
         <>
-          <div className='w-full min-h-[90vh] bg-gray-200 py-10'>
-          <Link to="/productsManagement" className='mx-10 mt-5 my-5 bg-[#1f2937] w-fit px-5 py-1 text-white text-[20px]'> Back</Link>
-          <div className='flex items-center justify-center-200'>
-                
-                <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow-lg max-w-xl mx-auto space-y-4">
-                    <input
-                        type="text"
-                        name="name"
-                        value={product.name}
-                        onChange={handleChange}
-                        placeholder="Product Name"
-                        className="border p-2 w-full rounded"
-                        required
-                    />
-                    <select
-                        name="category"
-                        value={product.category}
-                        onChange={handleCategoryChange}
-                        className="border p-2 w-full rounded"
-                        required
-                    >
-                        <option value="">Select Category</option>
-                        {categories.map((category) => (
-                            <option key={category._id} value={category._id}>
-                                {category.name}
-                            </option>
-                        ))}
-                    </select>
-                    <select
-                        name="subCategory"
-                        value={product.subCategory}
-                        onChange={handleChange}
-                        className="border p-2 w-full rounded"
-                        required
-                        disabled={!product.category}
-                    >
-                        <option value="">Select Subcategory</option>
-                        {subCategories.map((subCategory) => (
-                            <option key={subCategory._id} value={subCategory._id}>
-                                {subCategory.name}
-                            </option>
-                        ))}
-                    </select>
-                    <textarea
-                        name="description"
-                        value={product.description}
-                        onChange={handleChange}
-                        placeholder="Description"
-                        className="border p-2 w-full rounded"
-                        required
-                    />
-                    <input
-                        type="file"
-                        name="image"
-                        onChange={handleImageChange}
-                        className="border p-2 w-full rounded"
-                    />
-                    <input
-                        type="text"
-                        name="slug"
-                        value={product.slug}
-                        onChange={handleChange}
-                        placeholder="Product Slug"
-                        className="border p-2 w-full rounded"
-                        required
-                    />
-                    <label className="flex items-center space-x-2">
+            <div className='w-full min-h-[90vh] bg-gray-200 py-10'>
+                <Link to="/productsManagement" className='mx-10 mt-5 my-5 bg-[#1f2937] w-fit px-5 py-1 text-white text-[20px]'> Back</Link>
+                <div className='flex items-center justify-center-200'>
+
+                    <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow-lg max-w-xl mx-auto space-y-4">
                         <input
-                            type="checkbox"
-                            name="status"
-                            checked={product.status}
-                            onChange={() => setProduct({ ...product, status: !product.status })}
+                            type="text"
+                            name="name"
+                            value={product.name}
+                            onChange={handleChange}
+                            placeholder="Product Name"
+                            className="border p-2 w-full rounded"
+                            required
                         />
-                        <span>Active</span>
-                    </label>
-                    <button type="submit" className="bg-blue-500 w-full text-white px-4 py-2 rounded">Save</button>
-                </form>
+                        <select
+                            name="category"
+                            value={product.category}
+                            onChange={handleCategoryChange}
+                            className="border p-2 w-full rounded"
+                            required
+                        >
+                            <option value="">Select Category</option>
+                            {categories.map((category) => (
+                                <option key={category._id} value={category._id}>
+                                    {category.name}
+                                </option>
+                            ))}
+                        </select>
+                        <select
+                            name="subCategory"
+                            value={product.subCategory}
+                            onChange={handleChange}
+                            className="border p-2 w-full rounded"
+                            required
+                            disabled={!product.category}
+                        >
+                            <option value="">Select Subcategory</option>
+                            {subCategories.map((subCategory) => (
+                                <option key={subCategory._id} value={subCategory._id}>
+                                    {subCategory.name}
+                                </option>
+                            ))}
+                        </select>
+                        <textarea
+                            name="description"
+                            value={product.description}
+                            onChange={handleChange}
+                            placeholder="Description"
+                            className="border p-2 w-full rounded"
+                            required
+                        />
+                        <input
+                            type="file"
+                            name="image"
+                            onChange={handleImageChange}
+                            className="border p-2 w-full rounded"
+                        />
+                        <input
+                            type="text"
+                            name="slug"
+                            value={product.slug}
+                            onChange={handleChange}
+                            placeholder="Product Slug"
+                            className="border p-2 w-full rounded"
+                            required
+                        />
+                        <label className="flex items-center space-x-2">
+                            <input
+                                type="checkbox"
+                                name="status"
+                                checked={product.status}
+                                onChange={() => setProduct({ ...product, status: !product.status })}
+                            />
+                            <span>Active</span>
+                        </label>
+                        <button type="submit" className="bg-blue-500 w-full text-white px-4 py-2 rounded">Save</button>
+                    </form>
+                </div>
             </div>
-          </div>
-          
+
         </>
 
     );

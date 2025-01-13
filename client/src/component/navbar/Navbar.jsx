@@ -13,7 +13,7 @@ const Navbar = () => {
 
   
     // Define admin routes where you don't want to show the client navbar
-  const adminRoutes = ['/setting','/signup','/dashboard',"/categories",'/subcategories','/productsManagement', '/customerEnquery','/createProduct','/productDetails/:id','/editProduct/:id'];
+  const adminRoutes = ['/setting','/signup','/slider-handle','/dashboard',"/categories",'/subcategories','/productsManagement', '/customerEnquery','/createProduct','/productDetails/:id','/editProduct/:id'];
     // Check if the current route is an admin route
     const isAdminRoute = adminRoutes.includes(location.pathname);
 
@@ -48,7 +48,7 @@ const Navbar = () => {
           </li>
           <li>
             <NavLink className='text-[20px] px-2 py-1 hover:border-b-2 hover:border-b-red-900  text-red-900 transition-all' to='/contactUs'
-            >Contact</NavLink></li>
+            >Contact Us</NavLink></li>
         </ul>
         <div className='xl:hidden md:block sm:block' onClick={handleMenu} ><FaBars className='text-black text-[2.2rem]' /></div>
 

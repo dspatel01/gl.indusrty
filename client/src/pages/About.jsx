@@ -18,7 +18,7 @@ useEffect(() => {
           <h1 className='text-[7vmax] font-bold text-white text-justify textShadow mt-2 mb-0 '>About <span className='text-red-900'>Us</span></h1>
         </div>
       </div>
-      <div className='h-fit py-5 flex justify-between items-center px-5 flex-wrap mb-5'>
+      <div className='h-fit py-5 flex justify-between items-center px-5 flex-wrap mb-8'>
         <div className='xl:w-[45%] md:w-[95%]'>
           <img className='w-full h-[320px] mt-[-10px]' src={About1} alt="GLBM" />
         </div>
@@ -81,47 +81,18 @@ useEffect(() => {
           </p>
         </div>
       </div> */}
+      <div className='w-full h-fit my-5 flex justify-center items-center'>
+        <div className='xl:w-[100%] md:w-[100%] bg-gray-200 h-fit px-2 py-2 flex justify-center items-center'>
+          <h1 className='px-20 w-full xl:text-xl md:text-lg mt-0 text-white text-center py-8 bg-red-800 mx-auto'>One of the India's fastest growing apparel manufacturer with 05
+            factories based in DELHI and UP.
+          </h1>
+        </div>
+      </div>
 
       <div className='w-full h-[70vh] flex justify-center items-center'>
         <img className='xl:w-[80%] md:w-[95%] h-[100%]' src={About2} alt="" />
       </div>
 
-
-      <div className='w-full h-fit my-5 flex justify-center items-center'>
-        <div className='xl:w-[80%] md:w-[90%] bg-gray-200 h-fit px-2 py-2 flex justify-center items-center'>
-          <h1 className='px-20 w-full xl:text-xl md:text-lg mt-0 text-white text-center py-8 bg-red-800 mx-auto'>One of the India's fastest growing apparel manufacturer with 05
-            factories based in DELHI and UP.
-          </h1>
-
-          {/* <div className='flex  h-fit py-5 flex-wrap justify-around items-center'>
-            <div className='w-fit border border-gray-300 p-6 shadow mt-2'>
-              <p className='text-xl text-center'>
-                <span className='font-bold text-3xl text-red-800'>
-                  Turnover
-                </span> <br /> 2022 - 2023 <br /><span className='text-center text-red-800'>32 CR</span>
-              </p>
-            </div>
-
-            <div className='w-fit border border-gray-300 p-6 shadow mt-2'>
-              <p className='text-xl text-center'>
-                <span className='font-bold text-3xl text-red-800'>
-                  Turnover
-                </span>
-                <br /> 2023 - 2024 <br /><span className='text-red-800'>35 CR</span>
-              </p>
-            </div>
-
-            <div className='w-fit border border-gray-300 p-6 shadow mt-2'>
-              <p className='text-xl text-center'>
-                <span className='font-bold text-3xl text-red-800'>
-                  Expected Turnover
-                </span>
-                <br /> 2024 - 2025 <br /><span className='text-center text-red-800'>45 CR</span>
-              </p>
-            </div>
-          </div> */}
-        </div>
-      </div>
 
       <div className='h-fit py-5 flex bg-gray-200 justify-between xl:px-10 lg:px-10 md:px-5 sm:px-5 px-5 flex-wrap mb-5'>
         <div className='xl:w-[45%] md:w-[95%] order-1'>

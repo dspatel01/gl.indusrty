@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import SideBar from "../adminPanel/Sidebar"
 import { MdOutlineSpaceDashboard } from "react-icons/md";
-import { MdCancel } from "react-icons/md";
+import { MdCancel } from "react-icons/md"; 
 
 
 const CategoryManagement = () => {
@@ -16,20 +17,31 @@ const CategoryManagement = () => {
     const [success, setSuccess] = useState('');
     const [editingId, setEditingId] = useState(null); // New state for editing
     const [openSideBar, setSideBar] = useState(false)
-      const [CategoryForm, setCAtegoryForm] = useState(false)
+    const [CategoryForm, setCAtegoryForm] = useState(false)
+    
+    const BASE_URL = process.env.REACT_APP_BASE_URL;
+    const navigate = useNavigate(); // Initialize navigation
 
     useEffect(() => {
+        // Check for token in local storage
+        const token = localStorage.getItem('token');
+        if (!token) {
+            navigate('/admin/login'); // Redirect to login if token is not found
+        } else {
+            fetchCategories();
+        }
+    }, []);
+  
+  
         const fetchCategories = async () => {
             try {
-                const response = await axios.get('http://localhost:8080/api/categories');
+                const response = await axios.get(`${BASE_URL}/api/categories`);
                 setCategories(response.data);
             } catch (error) {
                 console.error('Error fetching categories:', error);
             }
         };
-        fetchCategories();
-    }, []);
-
+   
     console.log("object")
 
     const handleAddOrUpdateCategory = async () => {
@@ -45,7 +57,7 @@ const CategoryManagement = () => {
         try {
             if (editingId) {
                 // Update category
-                const response = await axios.put(`http://localhost:8080/api/categories/${editingId}`, categoryData);
+                const response = await axios.put(`${BASE_URL}/api/categories/${editingId}`, categoryData);
                 if (response.status === 200) {
                     setSuccess('Category updated successfully');
                     // Update local categories state
@@ -57,7 +69,7 @@ const CategoryManagement = () => {
                 }
             } else {
                 // Add new category
-                const response = await axios.post('http://localhost:8080/api/categories', categoryData);
+                const response = await axios.post(`${BASE_URL}/api/categories`, categoryData);
                 if (response.status === 201) {
                     setSuccess('Category created successfully');
                     // Update local categories state
@@ -76,7 +88,7 @@ const CategoryManagement = () => {
 
     const handleDelete = async (id) => {
         try {
-            await axios.delete(`http://localhost:8080/api/categories/${id}`);
+            await axios.delete(`${BASE_URL}/api/categories/${id}`);
             // Update local state immediately after deletion
             setCategories(categories.filter(category => category._id !== id));
             alert("Category deleted successfully!");
@@ -104,13 +116,13 @@ const CategoryManagement = () => {
         !openSideBar ? setSideBar(true) : setSideBar(false)
     }
 
-    const handleAddCategoryForm = () =>{
+    const handleAddCategoryForm = () => {
         !CategoryForm ? setCAtegoryForm(true) : setCAtegoryForm(false)
     }
 
     return (
         <>
-
+       
             <div className='ml-1  text-white text-[1.1rem] w-fit  cursor-pointer ' onClick={handleSideBar}>
                 {!openSideBar ? <MdOutlineSpaceDashboard className='text-[2rem] text-[#1f2937]' /> : <MdCancel className='text-[2rem] text-[#1f2937]' />}
             </div>

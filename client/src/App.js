@@ -19,6 +19,9 @@ import Product from './pages/Product';
 import AdminNav from './component/navbar/AdminNav';
 import EnqueryDetails from './component/adminPanel/EnqueryDetails';
 import Setting from './component/adminPanel/Setting';
+import AdminSliderPage from './component/adminPanel/AdminSliderPage';
+import FirstSignup from './component/FirstSignup';
+
 
 // import TopLine from './component/TopLine';
 
@@ -37,6 +40,7 @@ function App() {
           <Route path='/products' element={<Product />} />
           <Route path='/services' element={<Service />} />
           <Route path='/contactUs' element={<Contact />} />
+          <Route path="/first-admin/signup" element={<FirstSignup />} />
 
           {/* AdminPanel */}
           <Route path="/admin/login" element={<Login />} />
@@ -50,6 +54,7 @@ function App() {
           <Route path="/editProduct/:id" element={<EditProduct />} />
           <Route path="/customerEnquery" element={<EnqueryDetails />} />
           <Route path="/setting" element={<Setting />} />
+          <Route path="/slider-handle" element={<AdminSliderPage />} />
         </Routes>
         <Footer />
 

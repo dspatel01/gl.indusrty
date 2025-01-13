@@ -11,7 +11,7 @@
 /* Show navigation buttons only on hover */
 .slider-container:hover .swiper-button-prev,
 .slider-container:hover .swiper-button-next {
-  opacity: 1;
+  opacity: 0;
 }
 
 /* Tagline and subtitle styling */

@@ -3,20 +3,18 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { NavLink, Link } from 'react-router-dom'
 import { FaRegUser } from "react-icons/fa";
+import { jwtDecode } from 'jwt-decode';
 
 const EditProduct = () => {
-    const [loginUser, setLoginUser] = useState([]);
-
-    useEffect(() => {
-        const getUser = async () => {
-            const response = await axios.get('http://localhost:8080/api/admin/loginUser');
-            setLoginUser(response.data);
-        };
-        getUser();
-    }, []);
+    const [username, setUsername] = useState('');
     const { id } = useParams();
     const navigate = useNavigate();
-
+    const [subCategories, setSubCategories] = useState([]);
+    const [categories, setCategories] = useState([]);
+    const [newImage, setNewImage] = useState(null);
+    const [isCategoryEditable, setIsCategoryEditable] = useState(false);
+    const [isSubCategoryEditable, setIsSubCategoryEditable] = useState(false);
+    const [hindi, setHindi] = useState(false)
     const [product, setProduct] = useState({
         name: '',
         description: '',
@@ -26,12 +24,32 @@ const EditProduct = () => {
         status: false,
         image: null,
     });
-    const [subCategories, setSubCategories] = useState([]);
-    const [categories, setCategories] = useState([]);
-    const [newImage, setNewImage] = useState(null);
-    const [isCategoryEditable, setIsCategoryEditable] = useState(false);
-    const [isSubCategoryEditable, setIsSubCategoryEditable] = useState(false);
-    const [hindi, setHindi] = useState(false)
+
+
+    useEffect(() => {
+        // Check for token in local storage
+        const token = localStorage.getItem('token');
+        if (!token) {
+            navigate('/admin/login'); // Redirect to login if token is not found
+        } else {
+            getUsernameFromToken();
+        }
+    }, [])
+
+    const getUsernameFromToken = () => {
+        // Get the token from localStorage (or wherever you store it)
+        const token = localStorage.getItem('token');
+        if (token) {
+            try {
+                // Decode the token to extract user information
+                const decodedToken = jwtDecode(token);
+                setUsername(decodedToken.username); // Assuming the token contains a "username" field
+            } catch (error) {
+                console.error('Invalid token:', error);
+            }
+        }
+    };
+
 
     useEffect(() => {
         fetchProduct();
@@ -40,7 +58,7 @@ const EditProduct = () => {
 
     const fetchProduct = async () => {
         try {
-            const response = await axios.get(`http://localhost:8080/api/products/${id}`);
+            const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/products/${id}`);
             const productData = response.data;
             setProduct({
                 name: productData.name,
@@ -59,7 +77,7 @@ const EditProduct = () => {
 
     const fetchCategories = async () => {
         try {
-            const response = await axios.get('http://localhost:8080/api/categories');
+            const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/categories`);
             setCategories(response.data);
         } catch (error) {
             console.error("Error fetching categories:", error);
@@ -68,7 +86,7 @@ const EditProduct = () => {
 
     const fetchSubCategories = async (categoryId) => {
         try {
-            const response = await axios.get(`http://localhost:8080/api/subcategories/${categoryId}`);
+            const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/subcategories/${categoryId}`);
             setSubCategories(response.data);
         } catch (error) {
             console.error("Error fetching subcategories:", error);
@@ -115,7 +133,7 @@ const EditProduct = () => {
         }
 
         try {
-            const response = await axios.put(`http://localhost:8080/api/products/${id}`, formData, {
+            const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/api/products/${id}`, formData, {
                 headers: { 'Content-Type': 'multipart/form-data' },
             });
 
@@ -138,7 +156,7 @@ const EditProduct = () => {
     useEffect(() => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }, [])
-    
+
 
     return (
         <>
@@ -147,17 +165,9 @@ const EditProduct = () => {
                     <div className='text-[2rem] font-bold text-red-700  px-2'><NavLink to='/'>GLBM</NavLink> </div>
                 </div>
                 <div className='flex items-center'>
-                <div className='w-12 h-12 border rounded-full mr-2 flex items-center justify-center text-[1.5rem] text-white'> <FaRegUser /> </div>
-                    <strong className='text-white capitalize'>
-                        {
-                            loginUser.map((item) => {
-                                return (
-                                    <div>
-                                        {item.username}
-                                    </div>
-                                )
-                            })
-                        }
+                    <div className='w-12 h-12 border rounded-full mr-2 flex items-center justify-center text-[1.5rem] text-white'> <FaRegUser /> </div>
+                    <strong className="text-white capitalize">
+                        {username ? username : 'Loading...'}
                     </strong>
                 </div>
             </div>

@@ -10,7 +10,7 @@ import { useLocation } from 'react-router-dom';
 const Footer = () => {
   const location = useLocation();
      // Define the admin routes where you want to show the admin navbar
-     const adminRoutes = ['/setting','/signup', '/customerEnquery', '/dashboard', "/categories", '/subcategories', '/productsManagement', '/createProduct', '/productDetails', '/editProduct'];
+     const adminRoutes = ['/setting','/slider-handle','/signup', '/customerEnquery', '/dashboard', "/categories", '/subcategories', '/productsManagement', '/createProduct', '/productDetails', '/editProduct'];
 
      // Check if the current route is an admin route
      const isAdminRoute = adminRoutes.includes(location.pathname);
@@ -46,7 +46,8 @@ const Footer = () => {
           <h1 className='text-xl font-bold text-white mb-5'>Get In Touch</h1>
           <div>
             <div className='text-white cursor-pointer my-2 flex items-start' ><span className='mr-2 text-lg mt-1'><IoLocationOutline /></span> M/S G.L.B.M, H-4, Sector D-1, Tronica City,<br /> Ghaziabad-210103.</div>
-            <div className='text-white cursor-pointer my-2 flex items-center'><span className='mr-2 text-lg'><MdOutlineLocalPhone /></span>+91-9212790910</div>
+            <div className='text-white cursor-pointer my-2 flex items-center'><span className='mr-2 text-lg'><MdOutlineLocalPhone /></span>
+            +91-8383977648, +91-9212790910</div>
             <div className='text-white cursor-pointer my-2 flex items-center'><span className='mr-2 text-lg'><MdOutlineMailOutline /></span>glrs.smiley@gmail.com</div>
             <div className='flex mt-6'>
             <div className='text-white cursor-pointer ml-0' ><span className='mr-2 text-2xl mt-1'><IoLogoWhatsapp /></span> </div>

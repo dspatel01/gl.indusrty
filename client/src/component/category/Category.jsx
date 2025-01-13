@@ -12,7 +12,7 @@ const Category = () => {
 
     useEffect(() => {
         const getCategory = async () => {
-            const response = await axios.get('http://localhost:8080/api/categories');
+            const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/categories`);
             setCategories(response.data);
         };
         getCategory();
@@ -46,13 +46,14 @@ const Category = () => {
                         <div
                             key={item._id}
                             onClick={() => openProductPage()}
-                            className={`xl:text-xl sm:text-sm text-sm uppercase tracking-widest border border-gray-400 cursor-pointer xl:w-40 md:w-32 sm:w-[80%] w-[80%] xl:h-40 md:h-32 sm:h-12 h-12 flex justify-center items-center py-2 my-1 sm:mx-auto mx-auto`
+                            className={`xl:text-xl sm:text-sm text-sm uppercase tracking-widest border border-gray-400 cursor-pointer xl:w-40 md:w-32 sm:w-[80%] w-[80%] xl:h-40 md:h-32 sm:h-12 h-12 flex justify-center items-center py-2 my-1 sm:mx-auto mx-auto shadow hover:shadow-lg hover:bg-red-900 hover:text-white hover:shadow-black hover:border-none transition-all hover:text-[22px]`
                             }
                         >
                             {item.name}
                         </div>
                     ))}
                 </div>
+                
             </div>
 
             {/* Subcategories List */}

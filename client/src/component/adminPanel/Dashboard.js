@@ -10,14 +10,14 @@ const Dashboard = () => {
 
     useEffect(() => {
         if (!isLoggedIn) {
-            return navigation("/login")
+            return navigation("/admin/login")
         }
     }, [])
 
     useEffect(() => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }, [])
-    
+
 
     return (
         <div className="min-h-[87vh] my-1 flex">

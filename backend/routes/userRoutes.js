@@ -6,6 +6,7 @@ const { authenticateToken, isAdmin } = require('../middleware/authMiddleware.js'
 router.post('/login', login);
 router.get('/loginUser', getUser);
 router.post('/users', authenticateToken, isAdmin, createUser);
+
 // router.post('/users', createUser);
 
 module.exports = router;

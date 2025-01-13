@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/effect-fade';
@@ -8,26 +9,40 @@ import { EffectFade, Navigation, Pagination, Autoplay } from 'swiper/modules';
 import './Slider.css';  // Import custom CSS
 
 const Slider = () => {
-  const slides = [
-    {
-      id: 1,
-      image: 'http://localhost:8080/uploads/About1.png',
-      tagline: 'Explore the World',
-      subtitle: 'Discover new places and experiences.',
-    },
-    {
-      id: 2,
-      image: 'http://localhost:8080/uploads/facility1.png',
-      tagline: 'Feel the Nature',
-      subtitle: 'Immerse yourself in breathtaking nature.',
-    },
-    {
-      id: 3,
-      image: 'http://localhost:8080/uploads/facility.png',
-      tagline: 'Urban Adventures',
-      subtitle: 'Experience the buzz of city life.',
-    },
-  ];
+    const [slides, setSlides] = useState([]);
+       const [loading, setLoading] = useState(true);
+       const [error, setError] = useState(null);
+   
+useEffect(() => {
+  const fetchSlides = async () => {
+    try {
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/slides`);
+      setSlides(response.data);
+      setLoading(false);
+    } catch (err) {
+      setError("Failed to fetch slides. Please try again later.");
+      setLoading(false);
+    }
+  };
+
+  fetchSlides();
+}, []);
+
+if (loading) {
+  return (
+    <div className="flex justify-center items-center h-screen">
+      <p className="text-lg font-semibold">Loading...</p>
+    </div>
+  );
+}
+
+if (error) {
+  return (
+    <div className="flex justify-center items-center h-screen">
+      <p className="text-lg font-semibold text-red-600">{error}</p>
+    </div>
+  );
+}
 
   return (
     <Swiper
@@ -42,13 +57,22 @@ const Slider = () => {
       autoplay={{ delay: 3000, disableOnInteraction: false }}
     >
       {slides.map((slide) => (
-        <SwiperSlide key={slide.id} className="relative flex items-center justify-center">
-          <img src={slide.image} alt={slide.tagline} className="w-full h-full object-fit bg-black" />
-          <div className="absolute text-center text-black px-4">
+        <SwiperSlide key={slide._id} className="relative flex items-center justify-center">
+          <img src={slide.imageUrl} alt={slide.title || "Slide Image"} className="w-full h-full object-fit bg-black" />
+          {/* <div className="absolute text-center text-black px-4">
             <h2 className="text-3xl md:text-4xl font-bold mb-2 font-sans">{slide.tagline}</h2>
             <p className="text-lg md:text-xl opacity-90">{slide.subtitle}</p>
-          </div>
-        
+          </div> */}
+         {(slide.title || slide.description) && (
+                                <div className="absolute inset-0 bg-black bg-opacity-75 text-white flex flex-col justify-center items-center p-4">
+                                    {slide.title && (
+                                        <h2 className="text-[5vmax] font-mono mb-2">{slide.title}</h2>
+                                    )}
+                                    {slide.description && (
+                                        <p className="text-xl text-center mt-[-10px] italic">{slide.description}</p>
+                                    )}
+                                </div>
+                            )}
         </SwiperSlide>
       ))}
     

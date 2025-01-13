@@ -14,14 +14,14 @@ const FilterCategory = () => {
 
     useEffect(() => {
         const fetchCategories = async () => {
-            const response = await axios.get('http://localhost:8080/api/categories');
+            const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/categories`);
             setCategories(response.data);
         };
         fetchCategories();
     }, []);
 
     const fetchSubCategories = async (categoryId, categoryName) => {
-        const response = await axios.get(`http://localhost:8080/api/subcategories/${categoryId}`);
+        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/subcategories/${categoryId}`);
         setSubCategories(response.data);
         setActiveCategory(categoryId);
         setActiveCategoryName(categoryName);
@@ -31,7 +31,7 @@ const FilterCategory = () => {
 
     useEffect(() => {
         const fetchProducts = async () => {
-            const response = await axios.get('http://localhost:8080/api/products');
+            const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/products`);
             setProducts(response.data);
         };
         fetchProducts();
