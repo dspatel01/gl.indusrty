@@ -32,7 +32,7 @@ app.use('/api/contact', contactRouter)
 app.use("/api", sliderRoutes);
 
 app.get("/servertest",(req,res)=>{
-    res.send("server sunning")
+    res.send("server running")
 })
 
 const PORT = process.env.PORT || 8080;
